@@ -122,7 +122,7 @@ def main() -> None:
     shutil.copy2(ROOT / "docs" / "GUIA_USO.txt", dist / "GUIA_USO.txt")
     shutil.copy2(ROOT / "LICENSE", dist / "LICENSE.txt")
     shutil.copy2(notices, dist / notices.name)
-    shutil.copy2(ROOT / "docs" / "NOTAS_PROXIMA_VERSION.md", dist / "NOTAS_PUBLICACION.md")
+    shutil.copy2(ROOT / "docs" / f"NOTAS_RELEASE_v{VERSION}.md", dist / "NOTAS_PUBLICACION.md")
     archive_path = dist / "SPT_Go_Portable_Windows_x64.zip"
     with zipfile.ZipFile(archive_path, "w", compression=zipfile.ZIP_DEFLATED) as archive:
         for path in (final_exe, dist / "GUIA_USO.txt", dist / "LICENSE.txt", dist / notices.name):

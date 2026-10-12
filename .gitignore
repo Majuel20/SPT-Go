@@ -7,7 +7,7 @@ build/
 dist/
 *.spec
 *.egg-info/
-build_local.log
+build_*.log
 Resultados/
 SPT_Go_config.json
 SPAT_SSEE_config.json

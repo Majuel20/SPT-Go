@@ -1,6 +1,6 @@
 # Guía de usuario
 
-Descarga `SPT_Go-Portable.exe` de la [última Release](https://github.com/Majuel20/SPT-Go/releases/latest). Haz doble clic, sin instalar Python. Revisa [PORTABLE.md](PORTABLE.md) antes de usarlo desde una carpeta protegida.
+Descarga `SPT_Go-Portable.exe` de la [última Release](https://github.com/Majuel20/SPT-Go-Portable/releases/latest). Haz doble clic, sin instalar Python. Revisa [PORTABLE.md](PORTABLE.md) antes de usarlo desde una carpeta protegida.
 
 1. Escribe el nombre del proyecto, zona UTM, hemisferio, origen y punto de dirección de corriente.
 2. Indica la **distancia al pozo auxiliar**. El punto de dirección no fija esa distancia.

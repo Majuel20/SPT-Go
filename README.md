@@ -2,7 +2,7 @@
 
 **By: Majuel20** · Planificación de rutas de medición de sistemas de puesta a tierra en subestaciones eléctricas.
 
-**[Descargar la última Release](https://github.com/Majuel20/SPT-Go/releases/latest)** · Windows 10/11 x64 (destino de distribución; valida el EXE en tu equipo antes del trabajo de campo).
+**[Descargar la última Release](https://github.com/Majuel20/SPT-Go-Portable/releases/latest)** · Windows 10/11 x64 (destino de distribución; valida el EXE en tu equipo antes del trabajo de campo).
 
 SPT Go Portable permite configurar un origen UTM común, la dirección de corriente y una o varias direcciones de potencial. Muestra una vista esquemática oscura/neón y genera Excel, KML, KMZ y un proyecto JSON recuperable. No requiere instalar Python ni acceder a internet para generar archivos desde el EXE.
 

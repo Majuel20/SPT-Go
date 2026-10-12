@@ -1,3 +1,3 @@
-"""Versión única del producto; todavía corresponde a la publicación v1.0.2."""
+"""Versión única del producto."""
 
-VERSION = "1.0.2"
+VERSION = "1.0.3"

@@ -1,6 +1,6 @@
 # Historial de cambios
 
-## En preparación
+## v1.0.3 — 2026-10-11
 
 - Paquete Python en `src/spt_go`, documentación y pruebas automatizadas.
 - Compilación directa de `SPT_Go-Portable.exe` con comprobación PE x64 y prueba del EXE.
