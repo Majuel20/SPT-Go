@@ -97,8 +97,9 @@ jobs:
           if ($env:RELEASE_TAG -ne "v$version") { throw 'La etiqueta no coincide con la versión del código' }
           $tagCommit = git rev-parse "refs/tags/$env:RELEASE_TAG^{commit}"
           if ($LASTEXITCODE -ne 0 -or $tagCommit -ne $env:GITHUB_SHA) { throw 'La etiqueta no corresponde al commit seleccionado' }
-          gh release view $env:RELEASE_TAG --json tagName *> $null
-          if ($LASTEXITCODE -eq 0) { throw 'La Release ya existe; no se reemplaza' }
+          $releases = gh release list --json tagName --limit 1000 | ConvertFrom-Json
+          if ($LASTEXITCODE -ne 0) { throw 'No se pudo consultar la lista de Releases' }
+          if ($releases | Where-Object { $_.tagName -eq $env:RELEASE_TAG }) { throw 'La Release ya existe; no se reemplaza' }
           if (Select-String -Path dist/NOTAS_PUBLICACION.md -Pattern 'Borrador') { throw 'Completa las notas de publicación' }
       - name: Publicar únicamente la versión aprobada
         shell: pwsh
