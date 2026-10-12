@@ -3,13 +3,16 @@ from __future__ import annotations
 
 import json
 import math
+import os
 import re
 import sys
+import tempfile
 from dataclasses import asdict, dataclass, fields
 from pathlib import Path
 
-VERSION = "1.0.2"
-APP_NAME = "SPT Go"
+from ._version import VERSION
+
+APP_NAME = "SPT Go Portable"
 AUTHOR = "Majuel20"
 BYLINE = f"By: {AUTHOR}"
 COLORS = {
@@ -25,7 +28,33 @@ def portable_dir() -> Path:
     """Archivos del usuario junto al EXE, nunca en la extraccion temporal."""
     if getattr(sys, "frozen", False):
         return Path(sys.executable).resolve().parent
-    return Path(__file__).resolve().parent
+    return Path.cwd()
+
+
+def writable_dir(path: Path) -> bool:
+    """Comprueba escritura real sin dejar archivos de prueba."""
+    try:
+        path.mkdir(parents=True, exist_ok=True)
+        with tempfile.TemporaryFile(dir=path):
+            pass
+        return True
+    except OSError:
+        return False
+
+
+def user_data_dir() -> Path:
+    """Prefiere modo portable; usa datos locales si la carpeta del EXE es protegida."""
+    base = portable_dir()
+    if writable_dir(base):
+        return base
+    fallback = Path(os.environ.get("LOCALAPPDATA") or Path.home() / "AppData" / "Local") / "SPT Go Portable"
+    if writable_dir(fallback):
+        return fallback
+    raise OSError(f"No se puede escribir en {base} ni en {fallback}. Elige una carpeta con permisos de escritura.")
+
+
+def default_output_dir() -> Path:
+    return user_data_dir() / "Resultados"
 
 
 def number(value, label: str) -> float:
@@ -168,7 +197,7 @@ class Settings:
 
     @property
     def root_output(self) -> Path:
-        return Path(self.output_dir).expanduser().resolve() if self.output_dir.strip() else portable_dir() / "Resultados"
+        return Path(self.output_dir).expanduser().resolve() if self.output_dir.strip() else default_output_dir()
 
     @property
     def point_count(self) -> int:

@@ -6,8 +6,11 @@ venv/
 build/
 dist/
 *.spec
+*.egg-info/
+build_local.log
 Resultados/
 SPT_Go_config.json
+SPAT_SSEE_config.json
 Verificacion_SPT_Go.json
 Compilacion.log
 *_GoogleEarth.kml

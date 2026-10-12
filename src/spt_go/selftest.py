@@ -10,8 +10,8 @@ import xml.etree.ElementTree as ET
 import zipfile
 from pathlib import Path
 
-from spt_config import APP_NAME, AUTHOR, BYLINE, VERSION, Settings, load_settings, portable_dir, save_settings
-from spt_service import generate, validate_excel_tables
+from .config import APP_NAME, AUTHOR, BYLINE, VERSION, Settings, load_settings, portable_dir, save_settings
+from .service import generate, validate_excel_tables
 
 NS = {"k": "http://www.opengis.net/kml/2.2"}
 
@@ -126,7 +126,7 @@ def run_self_test(report_path=None, *, check_gui=False):
                 assert archive.read("imagenes/prueba.png") == b"recurso-de-prueba"
             checks.append("Plantilla KMZ y recursos conservados sin modificar el original")
         if check_gui:
-            from SPT_Go import Application
+            from .gui import Application
             app = Application(load_previous=False)
             app.withdraw()
             app.update_idletasks()
@@ -152,7 +152,7 @@ def run_self_test(report_path=None, *, check_gui=False):
         payload["error"] = None
     except Exception:
         payload["error"] = traceback.format_exc()
-    path = Path(report_path) if report_path else portable_dir() / "Verificacion_SPT_Go.json"
+    path = Path(report_path) if report_path else Path(tempfile.gettempdir()) / "Verificacion_SPT_Go.json"
     try:
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")

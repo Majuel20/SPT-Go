@@ -1,0 +1,5 @@
+# Verificación de esta propuesta
+
+Entorno local: Windows 11 Home x64, Python 3.12 x64. Se ejecutaron `python -m unittest discover -s tests -v` (13 pruebas correctas), el autotest desde Python y el compilador `scripts/build_windows.py`. Este último creó un EXE PE x64 real y ejecutó desde él el autotest, con conversión UTM/WGS84 de pyproj, generación Excel/KML/KMZ, integración KMZ base, ventana Tk, logo y controles ON/OFF. También se lanzó el EXE final desde una carpeta de trabajo temporal distinta y completó ocho comprobaciones. El EXE y ZIP generados dieron sumas SHA-256 coincidentes con `SHA256SUMS` local. Se ejecutó `pip-audit` tras actualizar pip en el entorno de build: no detectó vulnerabilidades conocidas en las dependencias publicadas; el paquete local no figura en PyPI y queda fuera de esa consulta.
+
+Pendiente: ejecución del workflow ya publicado en GitHub Actions, prueba en Windows 10 x64 y prueba manual con políticas de carpeta protegida y equipos sin Python. La compatibilidad con todas las configuraciones de Windows 10/11 no se presume por una sola máquina de prueba. Este documento describe una compilación de verificación, no una nueva Release.
