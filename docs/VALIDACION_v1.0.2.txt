@@ -1,4 +1,8 @@
-VALIDACIÓN DEL PROYECTO ENTREGADO
+VALIDACIÓN DEL PROYECTO ENTREGADO (REGISTRO HISTÓRICO)
+
+Este archivo conserva la declaración de la entrega anterior. Sus 19 pruebas no
+están presentes en la etiqueta pública v1.0.2 y no se reclaman como verificadas
+en el cambio actual. Consulta VALIDACION_ACTUAL.md para los resultados ejecutados.
 
 Versión 1.0.2 — By: Majuel20
 
