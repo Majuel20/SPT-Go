@@ -2,8 +2,8 @@
 setlocal EnableExtensions
 chcp 65001 >nul
 cd /d "%~dp0"
-title Crear SPT Go
-echo SPT Go - Crear EXE portable para Windows
+title Crear SPT Go Portable
+echo SPT Go Portable - Crear EXE para Windows x64
 echo.
 set "SPT_PYTHON="
 py -3.12 -c "import sys; sys.exit(0 if sys.maxsize > 2**32 else 1)" >nul 2>&1
@@ -32,15 +32,16 @@ if errorlevel 1 goto error
 echo [2/4] Instalando dependencias. Necesitas internet solo para crear el EXE.
 ".venv_spt_go\Scripts\python.exe" -m pip install --upgrade pip > "Compilacion.log" 2>&1
 if errorlevel 1 goto error
-".venv_spt_go\Scripts\python.exe" -m pip install --only-binary=:all: -r requirements.txt >> "Compilacion.log" 2>&1
+".venv_spt_go\Scripts\python.exe" -m pip install --only-binary=:all: -e . -r scripts\requirements-build.txt >> "Compilacion.log" 2>&1
 if errorlevel 1 goto error
 echo [3/4] Verificando y empaquetando. Esto puede tardar varios minutos.
-".venv_spt_go\Scripts\python.exe" build_windows.py >> "Compilacion.log" 2>&1
+".venv_spt_go\Scripts\python.exe" scripts\build_windows.py >> "Compilacion.log" 2>&1
 if errorlevel 1 goto error
 echo [4/4] Listo.
 echo.
-echo EXE: dist\SPT_Go.exe
-echo Paquete para regalar: dist\SPT_Go_Para_Regalar.zip
+echo EXE: dist\SPT_Go-Portable.exe
+echo Paquete: dist\SPT_Go_Portable_Windows_x64.zip
+echo Verificacion: dist\SHA256SUMS
 echo Los asistentes no necesitan instalar Python ni las dependencias.
 start "" "%~dp0dist"
 pause

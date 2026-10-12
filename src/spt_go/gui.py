@@ -14,8 +14,8 @@ import tkinter as tk
 import tkinter.font as tkfont
 from tkinter import filedialog, messagebox, ttk
 
-from spt_config import APP_NAME, BYLINE, COLORS, VERSION, Settings, integer, load_settings, number, portable_dir, preview_geometry, save_settings
-from spt_service import generate
+from .config import APP_NAME, BYLINE, COLORS, VERSION, Settings, default_output_dir, integer, load_settings, number, portable_dir, preview_geometry, save_settings, user_data_dir
+from .service import generate
 
 BG = "#080d16"
 PANEL = "#111b29"
@@ -108,7 +108,7 @@ class Application(tk.Tk):
         self.geometry(f"{max(960, width)}x{max(650, height)}")
         self.minsize(960, 650)
         self.configure(background=BG)
-        assets = Path(__file__).resolve().parent
+        assets = Path(__file__).resolve().parent / "assets"
         try:
             self.logo_image = tk.PhotoImage(file=str(assets / "logo.png"))
             self.iconphoto(True, self.logo_image)
@@ -122,7 +122,7 @@ class Application(tk.Tk):
         self.result_folder = None
         self.last_config = None
         self.preview_job = None
-        self.profile_path = portable_dir() / "SPT_Go_config.json"
+        self.profile_path = user_data_dir() / "SPT_Go_config.json"
         self.vars = {}
         for key, value in Settings().to_dict().items():
             self.vars[key] = tk.BooleanVar(self, value=value) if isinstance(value, bool) else tk.StringVar(self, value=str(value))
@@ -133,6 +133,9 @@ class Application(tk.Tk):
         self._build()
         self._apply(Settings())
         previous_profile = self.profile_path
+        old_profile = portable_dir() / "SPT_Go_config.json"
+        if not previous_profile.is_file() and old_profile.is_file():
+            previous_profile = old_profile
         legacy_profile = portable_dir() / "SPAT_SSEE_config.json"
         if not previous_profile.is_file() and legacy_profile.is_file():
             previous_profile = legacy_profile
@@ -321,7 +324,7 @@ class Application(tk.Tk):
     def _apply(self, cfg):
         for key, value in cfg.to_dict().items():
             self.vars[key].set(value)
-        self.vars["output_dir"].set(cfg.output_dir or str(portable_dir() / "Resultados"))
+        self.vars["output_dir"].set(cfg.output_dir or str(default_output_dir()))
         self.hemisphere.set("Sur" if cfg.hemisphere == "south" else "Norte")
         self.direction_text.configure(state="normal")
         self.direction_text.delete("1.0", "end")
@@ -335,7 +338,7 @@ class Application(tk.Tk):
         values = {key: var.get() for key, var in self.vars.items()}
         values["potential_points"] = self.direction_text.get("1.0", "end").strip()
         values["hemisphere"] = "south" if self.hemisphere.get() == "Sur" else "north"
-        if values["output_dir"].strip() == str(portable_dir() / "Resultados"):
+        if values["output_dir"].strip() == str(default_output_dir()):
             values["output_dir"] = ""
         cfg = Settings.from_dict(values)
         cfg.validate(check_files=check_files)
@@ -509,7 +512,7 @@ class Application(tk.Tk):
 
 def main():
     if "--self-test" in sys.argv:
-        from spt_selftest import run_self_test
+        from .selftest import run_self_test
         report = None
         if "--report" in sys.argv:
             position = sys.argv.index("--report") + 1

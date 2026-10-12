@@ -8,7 +8,7 @@ import tempfile
 from datetime import datetime
 from pathlib import Path
 
-from spt_config import AUTHOR, COLORS, Settings, portable_dir, save_settings
+from .config import AUTHOR, COLORS, Settings, portable_dir, save_settings
 
 
 def validate_excel_tables(workbook) -> None:
@@ -39,13 +39,16 @@ def validate_excel_tables(workbook) -> None:
 
 def generate(cfg: Settings) -> dict:
     cfg.validate(check_files=True)
-    import spt_motor as motor
+    from . import motor
     from pyproj import Transformer, network
 
     # Las conversiones WGS84/UTM se hacen con los datos incluidos en el EXE.
     network.set_network_enabled(False)
     root = cfg.root_output
-    root.mkdir(parents=True, exist_ok=True)
+    try:
+        root.mkdir(parents=True, exist_ok=True)
+    except OSError as exc:
+        raise OSError(f"No se puede crear la carpeta de resultados {root}: {exc}") from exc
     stamp = datetime.now().strftime("%Y%m%d_%H%M%S_%f")
     final_folder = root / f"{cfg.project}_{stamp}"
     staging = Path(tempfile.mkdtemp(prefix=".spt_temporal_", dir=root))

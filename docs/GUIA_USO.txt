@@ -4,7 +4,7 @@ By: Majuel20
 Esta guía acompaña el EXE compilado para Windows de 64 bits.
 No necesitas instalar Python para usar ese EXE.
 
-1. Abre SPT_Go.exe con doble clic.
+1. Abre SPT_Go-Portable.exe con doble clic.
 2. En «Proyecto y corriente», define:
    - Nombre del proyecto.
    - Zona UTM y hemisferio.
@@ -62,13 +62,16 @@ raíz cuadrada de [(Este2 − Este1)² + (Norte2 − Norte1)²].
 
 GUARDAR Y RECUPERAR PROYECTOS
 Usa «Guardar proyecto» y «Cargar proyecto» para conservar configuraciones.
-La última configuración se intenta guardar junto al EXE como SPT_Go_config.json.
-Ese archivo es opcional: el EXE funciona por sí mismo y lo crea cuando puede.
-Si la carpeta del EXE no permite escritura, elige otra carpeta para los resultados.
+La última configuración se guarda como SPT_Go_config.json junto al EXE cuando
+esa carpeta permite escritura. En caso contrario se usa la carpeta local del
+usuario: %LOCALAPPDATA%\SPT Go Portable. Los resultados predeterminados siguen
+la misma regla. También puedes elegir otra carpeta desde la ventana.
 
 PARA COMPARTIR
 Puedes entregar únicamente el EXE compilado, o el ZIP para regalar que
 incluye el EXE, esta guía y los avisos de las dependencias incluidas.
 No compartas tu configuración personal si prefieres que cada usuario use sus datos.
 
-La versión preparada se dirige a Windows 10/11 de 64 bits.
+La distribución se dirige a Windows 10/11 de 64 bits. Comprueba el EXE en el
+equipo de destino antes de usar los resultados en campo. El programa planifica
+puntos; no reemplaza el ensayo ni el criterio del profesional responsable.

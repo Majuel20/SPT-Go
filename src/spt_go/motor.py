@@ -15,7 +15,7 @@ from openpyxl.formatting.rule import FormulaRule
 from openpyxl.styles import Alignment, Border, Font, PatternFill, Side
 from openpyxl.worksheet.table import Table, TableStyleInfo
 
-from spt_config import AUTHOR, BYLINE
+from .config import AUTHOR, BYLINE
 
 
 # =========================================================

@@ -1,8 +1,8 @@
-**SPT Go 1.0.2 — By: Majuel20**
+**SPT Go Portable 1.0.2 — By: Majuel20**
 
-SPT Go permite preparar rutas y puntos de corriente y potencial desde una ventana, con diseño oscuro, botones neón y logo MK.
+SPT Go Portable permite preparar rutas y puntos de corriente y potencial desde una ventana, con diseño oscuro, botones neón y logo MK.
 
-Descarga **SPT_Go.exe** para abrir la aplicación, o **SPT_Go_Para_Regalar.zip** para recibir también la guía y los avisos de las dependencias. Destino: Windows 10/11 de 64 bits. Los usuarios del EXE no necesitan instalar Python.
+La Release pública v1.0.2 contiene **SPT_Go-Portable.exe**. Destino: Windows 10/11 de 64 bits. Los usuarios del EXE no necesitan instalar Python.
 
 Funciones principales:
 

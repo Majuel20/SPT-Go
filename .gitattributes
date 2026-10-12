@@ -1,7 +1,9 @@
 *.py text eol=lf
 *.md text eol=lf
 *.yml text eol=lf
+*.toml text eol=lf
 *.txt text eol=lf
 *.bat text eol=crlf
 *.png binary
 *.ico binary
+LICENSE text eol=lf

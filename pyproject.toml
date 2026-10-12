@@ -1,0 +1,25 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "spt-go-portable"
+dynamic = ["version"]
+description = "Planificador de rutas de medición para sistemas de puesta a tierra"
+readme = "README.md"
+requires-python = ">=3.11,<3.14"
+authors = [{name = "Majuel20"}]
+dependencies = ["pandas>=2.2,<4", "openpyxl>=3.1,<4", "pyproj>=3.6,<4"]
+classifiers = ["Operating System :: Microsoft :: Windows", "Programming Language :: Python :: 3"]
+
+[project.scripts]
+spt-go-portable = "spt_go.gui:main"
+
+[tool.setuptools.dynamic]
+version = {attr = "spt_go._version.VERSION"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+spt_go = ["assets/*.png", "assets/*.ico"]

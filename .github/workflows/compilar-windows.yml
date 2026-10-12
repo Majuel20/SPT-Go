@@ -1,0 +1,109 @@
+name: Compilar SPT Go Portable
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      publish_release:
+        description: "Publicar nueva Release tras aprobación y validación manual"
+        type: boolean
+        required: true
+        default: false
+      release_tag:
+        description: "Etiqueta nueva vX.Y.Z; solo si se publica"
+        type: string
+        required: false
+
+permissions:
+  contents: read
+
+jobs:
+  validar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+      - name: Instalar y comprobar importaciones y sintaxis
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -e .
+          python -m compileall -q src scripts tests
+          python -c "import spt_go.config, spt_go.motor, spt_go.service, spt_go.selftest"
+      - name: Pruebas unitarias e integración
+        run: python -m unittest discover -s tests -v
+
+  compilar:
+    needs: validar
+    runs-on: windows-2022
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+          architecture: x64
+      - name: Instalar dependencias
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install --only-binary=:all: -e . -r scripts/requirements-build.txt
+      - name: Compilar y probar EXE real
+        run: python scripts/build_windows.py
+      - name: Comprobar archivos y sumas
+        shell: pwsh
+        run: |
+          if (!(Test-Path dist/SPT_Go-Portable.exe) -or !(Test-Path dist/SPT_Go_Portable_Windows_x64.zip) -or !(Test-Path dist/SHA256SUMS)) { throw 'Faltan entregables' }
+          Get-Content dist/SHA256SUMS | ForEach-Object {
+            $parts = $_ -split '\s+', 2
+            $actual = (Get-FileHash -Algorithm SHA256 (Join-Path dist $parts[1])).Hash.ToLowerInvariant()
+            if ($actual -ne $parts[0]) { throw "SHA-256 incorrecto: $($parts[1])" }
+          }
+      - uses: actions/upload-artifact@v4
+        with:
+          name: SPT-Go-Portable-Windows-x64
+          path: |
+            dist/SPT_Go-Portable.exe
+            dist/SPT_Go_Portable_Windows_x64.zip
+            dist/SHA256SUMS
+            dist/AVISOS_TERCEROS.txt
+            dist/NOTAS_PUBLICACION.md
+          if-no-files-found: error
+          retention-days: 30
+
+  publicar:
+    if: github.event_name == 'workflow_dispatch' && inputs.publish_release == true
+    needs: compilar
+    runs-on: windows-2022
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+      - uses: actions/download-artifact@v4
+        with:
+          name: SPT-Go-Portable-Windows-x64
+          path: dist
+      - name: Validar etiqueta, versión, commit y ausencia de Release
+        shell: pwsh
+        env:
+          RELEASE_TAG: ${{ inputs.release_tag }}
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if ($env:RELEASE_TAG -notmatch '^v\d+\.\d+\.\d+$') { throw 'Etiqueta inválida' }
+          $version = python -c "import runpy; print(runpy.run_path('src/spt_go/_version.py')['VERSION'])"
+          if ($env:RELEASE_TAG -ne "v$version") { throw 'La etiqueta no coincide con la versión del código' }
+          $tagCommit = git rev-parse "refs/tags/$env:RELEASE_TAG^{commit}"
+          if ($LASTEXITCODE -ne 0 -or $tagCommit -ne $env:GITHUB_SHA) { throw 'La etiqueta no corresponde al commit seleccionado' }
+          gh release view $env:RELEASE_TAG --json tagName *> $null
+          if ($LASTEXITCODE -eq 0) { throw 'La Release ya existe; no se reemplaza' }
+          if (Select-String -Path dist/NOTAS_PUBLICACION.md -Pattern 'Borrador') { throw 'Completa las notas de publicación' }
+      - name: Publicar únicamente la versión aprobada
+        shell: pwsh
+        env:
+          RELEASE_TAG: ${{ inputs.release_tag }}
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create $env:RELEASE_TAG dist/SPT_Go-Portable.exe dist/SPT_Go_Portable_Windows_x64.zip dist/SHA256SUMS dist/AVISOS_TERCEROS.txt --title "SPT Go Portable $env:RELEASE_TAG — By: Majuel20" --notes-file dist/NOTAS_PUBLICACION.md --verify-tag
