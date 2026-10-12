@@ -34,7 +34,7 @@ El segundo punto de corriente **define una dirección**; `Distancia al pozo (m)`
 3. Haz doble clic en `CREAR_EXE.bat`. La primera compilación necesita internet para descargar las dependencias.
 4. Espera a que finalicen las pruebas y la compilación.
 5. Abre la carpeta `dist`:
-   - `SPT_Go.exe`: ejecutable portable.
+   - `SPT_Go-Portable.exe`: ejecutable portable.
    - `SPT_Go_Para_Regalar.zip`: paquete listo para distribuir.
 
 Los destinatarios del EXE no necesitan Python ni instalar las bibliotecas. La conversión WGS84/UTM usa los datos PROJ incluidos; no necesita internet durante el uso.
