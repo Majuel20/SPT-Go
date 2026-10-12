@@ -58,6 +58,16 @@ class ConfigTests(unittest.TestCase):
             with self.assertRaises(ValueError):
                 config.load_settings(path)
 
+    def test_failed_atomic_save_preserves_previous_file(self):
+        with tempfile.TemporaryDirectory() as temp:
+            path = Path(temp) / "proyecto.json"
+            path.write_text("anterior", encoding="utf-8")
+            with patch.object(config.os, "replace", side_effect=OSError("sin permiso")):
+                with self.assertRaises(OSError):
+                    config.save_settings(path, config.Settings())
+            self.assertEqual(path.read_text(encoding="utf-8"), "anterior")
+            self.assertEqual(list(Path(temp).glob(".spt_config_*")), [])
+
     def test_read_only_portable_fallback(self):
         with tempfile.TemporaryDirectory() as temp:
             exe_dir = Path(temp) / "exe"

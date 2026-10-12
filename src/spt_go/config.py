@@ -231,7 +231,20 @@ def preview_geometry(cfg: Settings) -> dict:
 
 
 def save_settings(path: Path, cfg: Settings) -> None:
-    path.write_text(json.dumps({"schema": "spt-go", "version": 1, "settings": cfg.to_dict()}, ensure_ascii=False, indent=2), encoding="utf-8")
+    """Guarda el proyecto de forma atómica en la misma carpeta de destino."""
+    payload = json.dumps({"schema": "spt-go", "version": 1, "settings": cfg.to_dict()}, ensure_ascii=False, indent=2)
+    path = Path(path)
+    temporary = None
+    try:
+        with tempfile.NamedTemporaryFile(mode="w", encoding="utf-8", dir=path.parent, prefix=".spt_config_", suffix=".tmp", delete=False) as stream:
+            temporary = Path(stream.name)
+            stream.write(payload)
+            stream.flush()
+            os.fsync(stream.fileno())
+        os.replace(temporary, path)
+    finally:
+        if temporary is not None:
+            temporary.unlink(missing_ok=True)
 
 
 def load_settings(path: Path) -> Settings:
