@@ -1,0 +1,29 @@
+VALIDACIÓN DEL PROYECTO ENTREGADO
+
+Versión 1.0.2 — By: Majuel20
+
+Resultado local: 19 pruebas automatizadas satisfactorias.
+
+Se verificó:
+- ON/OFF y listas de direcciones independientes.
+- Origen compartido y cambio de coordenadas.
+- Pozo auxiliar único al 100% y sin rayos de corriente.
+- Potencial sin punto 100%, y trazos hasta el último porcentaje menor a 100%.
+- Conservación de la circunferencia del 100%.
+- Excel, KML, KMZ y guardado/recuperación de configuraciones.
+- Conservación de la plantilla KMZ y sus recursos.
+- Separación de ejecuciones y limpieza de salidas incompletas si falla la generación.
+- Zona UTM de un dígito y resolución de rutas del EXE portable.
+- Ausencia de filtros de hoja superpuestos a los filtros de tablas en el XML de Excel.
+- Detección del conflicto de filtros reportado por Excel.
+- Carga de proyectos JSON anteriores y guardado con el formato SPT Go.
+- Sintaxis del código, recursos del logo y estructura del flujo GitHub.
+
+Entorno de preparación: Linux.
+Las pruebas locales de exportación usan una proyección de identidad para
+comprobar la geometría UTM y los exportadores. No prueban la conversión geográfica.
+No se ejecutó la ventana Tk ni se compiló un EXE Windows en este entorno.
+
+La compilación en Windows incluida ejecuta una verificación con pyproj real y
+crea la ventana antes de compilar. Después repite esa prueba desde el EXE.
+Solo prepara el paquete para regalar cuando ambas pruebas son satisfactorias.

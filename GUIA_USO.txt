@@ -1,0 +1,74 @@
+SPT GO PORTABLE — GUÍA RÁPIDA
+By: Majuel20
+
+Esta guía acompaña el EXE compilado para Windows de 64 bits.
+No necesitas instalar Python para usar ese EXE.
+
+1. Abre SPT_Go.exe con doble clic.
+2. En «Proyecto y corriente», define:
+   - Nombre del proyecto.
+   - Zona UTM y hemisferio.
+   - Este y Norte del origen común.
+   - Este y Norte de un punto que indique la dirección de corriente.
+   - Distancia, en metros, desde el origen hasta el pozo auxiliar.
+
+IMPORTANTE SOBRE LAS COORDENADAS
+El punto de dirección orienta la recta. El pozo auxiliar se ubica a la
+distancia indicada, que puede ser distinta de la distancia a ese punto.
+Para ubicar el pozo exactamente en la segunda coordenada, usa como distancia:
+raíz cuadrada de [(Este2 − Este1)² + (Norte2 − Norte1)²].
+
+3. En «Potencial», elige el modo:
+   ON: usa la dirección de corriente; ignora la lista de coordenadas.
+   OFF: cada par Este, Norte; de la lista define una ruta distinta.
+   Todas las rutas toman el origen de corriente automáticamente.
+
+   Ejemplo de varias direcciones:
+   552878.84, 9423290.72;
+   548000.00, 9424000.00;
+
+   Son coordenadas de ejemplo. Sustitúyelas por las de tu proyecto.
+   Usa punto para decimales en esa lista.
+
+4. Configura el abanico de potencial:
+   - 0 rayos laterales: una recta por dirección.
+   - 1 rayo por lado: tres rectas por dirección.
+   - 2 rayos por lado: cinco rectas por dirección.
+   La separación orienta los rayos a la distancia de referencia del 100%.
+   La corriente siempre tiene una sola recta y un solo pozo auxiliar.
+
+5. Configura porcentajes separados por punto y coma:
+   0; 10; 20; 30; 40; 50; 52; 60; 61.8; 70; 72; 80; 90; 100
+   - Los menores al 100% generan puntos de potencial.
+   - El trazo de potencial termina en el mayor porcentaje menor al 100%.
+   - 100% genera solo «Pozo auxiliar (C100%)» en corriente.
+   - Todas las circunferencias se conservan, incluida la del 100%.
+   Todos los porcentajes usan la distancia al pozo como referencia.
+
+6. En «Salida», selecciona la carpeta y el color de circunferencias.
+   Opcionalmente, selecciona un archivo base KML/KMZ.
+   Si no usas base, se crea un documento nuevo de Google Earth.
+   El archivo base original no se modifica.
+
+7. Pulsa «Validar y actualizar vista» y luego «Generar archivos».
+   La vista es un esquema de coordenadas UTM; no muestra terreno ni obstáculos.
+
+8. Pulsa «Abrir resultados». Cada ejecución crea una carpeta nueva con:
+   - Excel de coordenadas y columnas de medición.
+   - KML para Google Earth.
+   - KMZ para Google Earth.
+   - Proyecto.json para recuperar la configuración.
+   - Registro.txt de la generación.
+
+GUARDAR Y RECUPERAR PROYECTOS
+Usa «Guardar proyecto» y «Cargar proyecto» para conservar configuraciones.
+La última configuración se intenta guardar junto al EXE como SPT_Go_config.json.
+Ese archivo es opcional: el EXE funciona por sí mismo y lo crea cuando puede.
+Si la carpeta del EXE no permite escritura, elige otra carpeta para los resultados.
+
+PARA COMPARTIR
+Puedes entregar únicamente el EXE compilado, o el ZIP para regalar que
+incluye el EXE, esta guía y los avisos de las dependencias incluidas.
+No compartas tu configuración personal si prefieres que cada usuario use sus datos.
+
+La versión preparada se dirige a Windows 10/11 de 64 bits.

@@ -1,0 +1,17 @@
+__pycache__/
+*.py[cod]
+.venv_spt_go/
+.venv/
+venv/
+build/
+dist/
+*.spec
+Resultados/
+SPT_Go_config.json
+Verificacion_SPT_Go.json
+Compilacion.log
+*_GoogleEarth.kml
+*_GoogleEarth.kmz
+*_Coordenadas_*.xlsx
+.DS_Store
+Thumbs.db
